@@ -4,6 +4,18 @@ Szászik Adrián - Asztali alkalmazás
 
 Kardos Xavér Noel - Weboldal
 
+## A projekt célja
+Egy olyan weboldal és asztali alkalmazás ahol a felhasználó foglalhat egy általa tetszőleges helyet és vásárolhat jegyet egy filmvetítésre. A weboldal könnyen kezelhető és átlátható legyen a felhasználó számára
+
+Az oldalon a felhasználó tudjon:
++ Fiókot létrehozni, szerkeszteni és törölni
++ A vetítések időpontját megnézheti és kiválaszthatja foglaláshoz
+  - helyfoglalás
++ Online fizetést/tranzakciót végrehajtani
+
+> [!NOTE]
+> A készítés közben még változhatnak az elképzelések 
+
 ## 📊 Adatbázis ER Diagram
 
 ```mermaid
@@ -89,5 +101,6 @@ erDiagram
     ULES ||--o{ KONYVELES : "assigned"
 
     KONYVELES ||--o{ FIZETES : "paid_by"
+
 
 
