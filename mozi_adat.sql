@@ -6,7 +6,10 @@
 -- Létrehozás ideje: 2026. Jan 21. 11:21
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
-
+CREATE DATABASE IF NOT EXISTS mozi_adat
+  DEFAULT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_general_ci;
+USE mozi_adat;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
