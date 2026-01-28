@@ -8,10 +8,6 @@ Kardos Xavér Noel - Weboldal
 
 ```mermaid
 erDiagram
-...
-
-
-erDiagram
 
     FILMEK {
         int film_id PK
@@ -93,4 +89,5 @@ erDiagram
     ULES ||--o{ KONYVELES : "assigned"
 
     KONYVELES ||--o{ FIZETES : "paid_by"
+
 
