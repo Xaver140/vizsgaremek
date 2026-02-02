@@ -1,14 +1,12 @@
-// routes/admin.js
-
 import express from "express";
 import db from "../db.js";
 import authMiddleware from "../middleware/authmiddleware.js";
 import adminMiddleware from "../middleware/adminmiddleware.js";
 const router = express.Router();
 
-/* ======================
-   FILMEK (ADMIN CRUD)
-   ====================== */
+//Ezeket csak Admin használhatja!!!!
+
+//filmek
 
 // Új film
 router.post("/filmek", authMiddleware, adminMiddleware, async (req, res) => {
@@ -22,7 +20,7 @@ router.post("/filmek", authMiddleware, adminMiddleware, async (req, res) => {
   res.json({ message: "Film hozzáadva" });
 });
 
-// Film módosítás
+// létező film módosítás
 router.put("/filmek/:id", authMiddleware, adminMiddleware, async (req, res) => {
   const { title, description, duration_minutes, genre, is_active } = req.body;
 
@@ -35,7 +33,7 @@ router.put("/filmek/:id", authMiddleware, adminMiddleware, async (req, res) => {
   res.json({ message: "Film frissítve" });
 });
 
-// Film törlés (soft delete)
+// Film törlés
 router.delete("/filmek/:id", authMiddleware, adminMiddleware, async (req, res) => {
   await db.query(
     "UPDATE filmek SET is_active = 0 WHERE film_id = ?",
@@ -46,9 +44,8 @@ router.delete("/filmek/:id", authMiddleware, adminMiddleware, async (req, res) =
 });
 
 
-/* ======================
-   VETÍTÉSEK (ADMIN CRUD)
-   ====================== */
+
+// Admin vetítések kezelése
 
 // Új vetítés
 router.post("/vetitesek", authMiddleware, adminMiddleware, async (req, res) => {
