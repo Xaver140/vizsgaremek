@@ -1,4 +1,13 @@
 {
+  "name": "cinema-booking-backend",
+  "version": "1.0.0",
+  "description": "Mozi weboldal",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
