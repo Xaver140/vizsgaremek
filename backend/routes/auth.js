@@ -7,16 +7,25 @@ const router = express.Router();
 
 // regisztráció
 router.post("/register", async (req, res) => {
-  const { email, password, full_name } = req.body;
+  try {
+    const { email, password, full_name } = req.body;
 
-  const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, 10);
 
-  await db.query(
-    "INSERT INTO users (email, password_hash, full_name) VALUES (?, ?, ?)",
-    [email, hash, full_name]
-  );
+    await db.query(
+      "INSERT INTO users (email, password_hash, full_name) VALUES (?, ?, ?)",
+      [email, hash, full_name]
+    );
 
-  res.json({ message: "Sikeres regisztráció" });
+    res.json({ message: "Sikeres regisztráció" });
+//ideiglenes teszthez
+  } catch (err) {
+  console.error("REGISZTRÁCIÓ HIBA:", err);
+  res.status(500).json({
+    error: err.message,
+    code: err.code
+  });
+  }
 });
 
 // bejelentkezés
