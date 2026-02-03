@@ -6,7 +6,7 @@
 
         public LoginForm()
         {
-
+            this.Text = "test";
             InitializeComponent();
             _api = new ApiClient("http://localhost:3000");
         }
