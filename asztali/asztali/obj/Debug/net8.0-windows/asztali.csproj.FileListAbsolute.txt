@@ -1,0 +1,16 @@
+C:\Users\szaadr206\source\repos\asztali\asztali\bin\Debug\net8.0-windows\asztali.exe
+C:\Users\szaadr206\source\repos\asztali\asztali\bin\Debug\net8.0-windows\asztali.deps.json
+C:\Users\szaadr206\source\repos\asztali\asztali\bin\Debug\net8.0-windows\asztali.runtimeconfig.json
+C:\Users\szaadr206\source\repos\asztali\asztali\bin\Debug\net8.0-windows\asztali.dll
+C:\Users\szaadr206\source\repos\asztali\asztali\bin\Debug\net8.0-windows\asztali.pdb
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.LoginForm.resources
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.csproj.GenerateResource.cache
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.AssemblyInfoInputs.cache
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.AssemblyInfo.cs
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.csproj.CoreCompileInputs.cache
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.dll
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\refint\asztali.dll
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.pdb
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\asztali.genruntimeconfig.cache
+C:\Users\szaadr206\source\repos\asztali\asztali\obj\Debug\net8.0-windows\ref\asztali.dll
