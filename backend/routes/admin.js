@@ -45,7 +45,7 @@ router.delete("/filmek/:id", authMiddleware, adminMiddleware, async (req, res) =
 
 
 
-// Admin vetítések kezelése
+// ívetítések kezelése
 
 // Új vetítés
 router.post("/vetitesek", authMiddleware, adminMiddleware, async (req, res) => {
