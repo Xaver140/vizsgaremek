@@ -31,6 +31,7 @@
             txtPassword = new TextBox();
             txtEmail = new TextBox();
             btnLogin = new Button();
+            btnGoMain = new Button();
             SuspendLayout();
             // 
             // txtPassword
@@ -58,16 +59,27 @@
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
+            // btnGoMain
+            // 
+            btnGoMain.Location = new Point(296, 326);
+            btnGoMain.Name = "btnGoMain";
+            btnGoMain.Size = new Size(170, 104);
+            btnGoMain.TabIndex = 3;
+            btnGoMain.Text = "Tovább";
+            btnGoMain.UseVisualStyleBackColor = true;
+            btnGoMain.Click += btnGoMain_Click;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnGoMain);
             Controls.Add(btnLogin);
             Controls.Add(txtEmail);
             Controls.Add(txtPassword);
             Name = "LoginForm";
-            Text = "LoginForm";
+            Text = "Login Form";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -77,5 +89,6 @@
         private TextBox txtPassword;
         private TextBox txtEmail;
         private Button btnLogin;
+        private Button btnGoMain;
     }
 }

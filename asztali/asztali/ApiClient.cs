@@ -40,4 +40,13 @@ public class ApiClient
         var json = await res.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<TRes>(json, _json);
     }
+    public async Task<T?> GetAsync<T>(string url)
+    {
+        using var res = await _http.GetAsync(url);
+        await EnsureOk(res);
+
+        var json = await res.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<T>(json, _json);
+    }
+
 }

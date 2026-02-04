@@ -4,7 +4,7 @@
     {
         private readonly ApiClient _api;
 
-        public LoginForm()
+        public LoginForm() 
         {
             this.Text = "test";
             InitializeComponent();
@@ -13,6 +13,9 @@
 
         private async void btnLogin_Click(object sender, EventArgs e)
         {
+
+
+
             btnLogin.Enabled = false;
 
             try
@@ -41,6 +44,13 @@
             {
                 btnLogin.Enabled = true;
             }
+        }
+
+        private void btnGoMain_Click(object sender, EventArgs e)
+        {
+            var main = new MainForm();
+            main.Show();
+            this.Hide(); // vagy this.Close(); (lásd lent)
         }
     }
 
