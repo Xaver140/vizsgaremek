@@ -18,9 +18,10 @@ router.post("/register", async (req, res) => {
     );
 
     res.json({ message: "Sikeres regisztráció" });
+
 //ideiglenes teszthez
   } catch (err) {
-  console.error("REGISZTRÁCIÓ HIBA:", err);
+  console.error("Reg hiba:", err);
   res.status(500).json({
     error: err.message,
     code: err.code
