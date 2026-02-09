@@ -32,6 +32,7 @@
             btnLoadFilmek = new Button();
             label1 = new Label();
             btnBack = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvFilmek).BeginInit();
             SuspendLayout();
             // 
@@ -69,13 +70,24 @@
             btnBack.TabIndex = 3;
             btnBack.Text = "Vissza";
             btnBack.UseVisualStyleBackColor = true;
-            btnBack.Click += this.btnBack_Click;
+            btnBack.Click += btnBack_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(322, 199);
+            button1.Name = "button1";
+            button1.Size = new Size(143, 118);
+            button1.TabIndex = 4;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(btnBack);
             Controls.Add(label1);
             Controls.Add(btnLoadFilmek);
@@ -93,5 +105,6 @@
         private Button btnLoadFilmek;
         private Label label1;
         private Button btnBack;
+        private Button button1;
     }
 }
