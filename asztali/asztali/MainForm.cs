@@ -56,7 +56,7 @@ namespace asztali
         {
             this.Hide();
 
-            using (var f = new Form1())
+            using (var f = new DatabaseForm())
             {
                 f.ShowDialog();
             }

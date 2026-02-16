@@ -1,6 +1,6 @@
 ﻿namespace asztali
 {
-    partial class Form1
+    partial class DatabaseForm
     {
         /// <summary>
         /// Required designer variable.
@@ -86,7 +86,7 @@
             BacktoMain.UseVisualStyleBackColor = true;
             BacktoMain.Click += BacktoMain_Click;
             // 
-            // Form1
+            // DatabaseForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -96,8 +96,8 @@
             Controls.Add(Insert);
             Controls.Add(Update);
             Controls.Add(listBox1);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "DatabaseForm";
+            Text = "DatabaseForm";
             Load += Form1_Load;
             ResumeLayout(false);
         }
