@@ -36,7 +36,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(50, 137);
+            txtPassword.Location = new Point(50, 130);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(104, 23);
             txtPassword.TabIndex = 0;
@@ -44,14 +44,14 @@
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(50, 94);
+            txtEmail.Location = new Point(50, 65);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(128, 23);
             txtEmail.TabIndex = 1;
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(273, 94);
+            btnLogin.Location = new Point(222, 12);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(147, 184);
             btnLogin.TabIndex = 2;
@@ -65,7 +65,7 @@
             btnGoMain.Name = "btnGoMain";
             btnGoMain.Size = new Size(170, 104);
             btnGoMain.TabIndex = 3;
-            btnGoMain.Text = "Tovább";
+            btnGoMain.Text = "Mainpage";
             btnGoMain.UseVisualStyleBackColor = true;
             btnGoMain.Click += btnGoMain_Click;
             // 

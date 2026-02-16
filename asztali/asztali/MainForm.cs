@@ -54,8 +54,14 @@ namespace asztali
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1();
-            form1.ShowDialog();
+            this.Hide();
+
+            using (var f = new Form1())
+            {
+                f.ShowDialog();
+            }
+
+            this.Show();
         }
     }
 

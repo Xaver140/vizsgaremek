@@ -32,6 +32,7 @@
             Update = new Button();
             Insert = new Button();
             Delete = new Button();
+            BacktoMain = new Button();
             SuspendLayout();
             // 
             // listBox1
@@ -75,11 +76,22 @@
             Delete.UseVisualStyleBackColor = true;
             Delete.Click += Delete_Click;
             // 
+            // BacktoMain
+            // 
+            BacktoMain.Location = new Point(539, 371);
+            BacktoMain.Name = "BacktoMain";
+            BacktoMain.Size = new Size(226, 56);
+            BacktoMain.TabIndex = 4;
+            BacktoMain.Text = "BacktoMain";
+            BacktoMain.UseVisualStyleBackColor = true;
+            BacktoMain.Click += BacktoMain_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(BacktoMain);
             Controls.Add(Delete);
             Controls.Add(Insert);
             Controls.Add(Update);
@@ -96,5 +108,6 @@
         private Button Update;
         private Button Insert;
         private Button Delete;
+        private Button BacktoMain;
     }
 }
