@@ -13,7 +13,7 @@ namespace asztali
 {
     public partial class DatabaseForm : Form
     {
-        string cs = "server=localhost;user=root;password=;database=cinema;";
+        string cs = "server=localhost;uid=root;database=mozi_adat;port=3307;pwd=;";
         public DatabaseForm()
         {
             InitializeComponent();
@@ -21,7 +21,7 @@ namespace asztali
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            using (MySqlConnection conn = new MySqlConnection("server=localhost;uid=root;database=mozi_adat;port=3307;pwd=;"))
+            using (MySqlConnection conn = new MySqlConnection(cs))
             {
                 conn.Open();
 
@@ -34,7 +34,7 @@ namespace asztali
 
                     while (reader.Read())
                     {
-                        listBox1.Items.Add(reader["full_name"].ToString() + " - " + reader["phone_number"].ToString() + " - " + reader["email"].ToString());
+                        listBox1.Items.Add(reader["full_name"].ToString() + ";" + reader["phone_number"].ToString() + ";" + reader["email"].ToString());
                     }
                 }
             }
@@ -46,20 +46,23 @@ namespace asztali
             {
                 listBox1.Items.Clear();
 
-                using (var conn = new MySqlConnection(cs))
+                using (MySqlConnection conn = new MySqlConnection(cs))
                 {
                     conn.Open();
 
-                    using (var cmd = new MySqlCommand("SELECT name, phone, email FROM users", conn))
-                    using (var reader = cmd.ExecuteReader())   // EZ FONTOS: using
+                    string sql = "SELECT * FROM users";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
+                        listBox1.Items.Clear();
+
                         while (reader.Read())
                         {
-                            string line = $"{reader.GetString(0)} - {reader.GetString(1)} - {reader.GetString(2)}";
-                            listBox1.Items.Add(line);
+                            listBox1.Items.Add(reader["full_name"].ToString() + ";" + reader["phone_number"].ToString() + ";" + reader["email"].ToString());
                         }
-                    } // reader biztos bezár
-                } // conn biztos bezár
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -88,7 +91,7 @@ namespace asztali
 
             try
             {
-                var selected = listBox1.SelectedItem.ToString();
+                var selected = listBox1.SelectedItem.ToString().Split(';')[0];
 
                 using (var conn = new MySql.Data.MySqlClient.MySqlConnection(cs))
                 {
@@ -97,8 +100,13 @@ namespace asztali
                     using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(
                         "UPDATE users SET email=@e WHERE fulltext=@t", conn))
                     {
+
+                        cmd.CommandText = "UPDATE users SET email='" + newEmail.Trim() + "' WHERE full_name='" + selected.ToString() +"';";
+
                         cmd.Parameters.AddWithValue("@e", newEmail.Trim());
                         cmd.Parameters.AddWithValue("@t", selected);
+
+                        Clipboard.SetText(cmd.CommandText);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -108,6 +116,7 @@ namespace asztali
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Update hiba");
+
             }
         }
 
@@ -142,7 +151,7 @@ namespace asztali
                 return;
             }
 
-            var selected = listBox1.SelectedItem.ToString();
+            var selected = listBox1.SelectedItem.ToString().Split(';')[0];
 
             var ok = MessageBox.Show("Biztos törlöd?", "Delete", MessageBoxButtons.YesNo);
             if (ok != DialogResult.Yes) return;
@@ -151,7 +160,7 @@ namespace asztali
             {
                 conn.Open();
 
-                var cmd = new MySqlCommand("DELETE FROM users WHERE fulltext=@t", conn);
+                var cmd = new MySqlCommand("DELETE FROM users WHERE full_name='@t'", conn);
                 cmd.Parameters.AddWithValue("@t", selected);
                 cmd.ExecuteNonQuery();
             }
