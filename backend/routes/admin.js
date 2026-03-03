@@ -6,8 +6,11 @@ const router = express.Router();
 
 //Ezeket csak Admin használhatja!!!!
 
-//filmek
-
+//filmek megjelenítése
+router.get("/filmek", authMiddleware, adminMiddleware, async (req, res) => {
+  const [rows] = await db.query("SELECT * FROM filmek");
+  res.json(rows);
+});
 // Új film
 router.post("/filmek", authMiddleware, adminMiddleware, async (req, res) => {
   const { title, description, duration_minutes, release_year, genre } = req.body;

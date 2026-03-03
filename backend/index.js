@@ -5,8 +5,8 @@ import db from "./db.js";
 
 //adatbázis teszt
 db.query("SELECT 1")
-  .then(() => console.log("✅ DB kapcsolat OK"))
-  .catch((e) => console.error("❌ DB kapcsolat HIBA:", e.code, e.message));
+  .then(() => console.log("Adatbázis kapcsolat OK"))
+  .catch((e) => console.error("Adatbázis kapcsolat HIBA:", e.code, e.message));
 
 
 import authRoutes from './routes/auth.js';
