@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import SearchBar from "../components/SearchBar";
 import api from "../api/api";
 
 export default function Adminkezelo() {
+  const [search, setSearch] = useState("");
   const [films, setFilms] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
@@ -76,6 +79,7 @@ export default function Adminkezelo() {
 
   return (
     <div>
+      <Navbar search={search} setSearch={setSearch} />
       <h1>Admin - Film kezelés</h1>
 
       <h3>{editingId ? "Film szerkesztése" : "Új film hozzáadása"}</h3>
@@ -91,37 +95,49 @@ export default function Adminkezelo() {
       </button>
 
       <hr />
-
+      {/* Searchbar fimekhez */}
+      <div>
       <h3>Filmek listája</h3>
-
+      <SearchBar search={search} setSearch={setSearch} />
+      </div>
       <table border="1">
         <thead>
           <tr>
             <th>ID</th>
             <th>Cím</th>
+            <th>Leírás</th>
+            <th>Hossz (perc)</th>
+            <th>Év</th>
             <th>Műfaj</th>
             <th>Aktív</th>
             <th>Művelet</th>
           </tr>
         </thead>
         <tbody>
-          {films.map(film => (
-            <tr key={film.film_id}>
-              <td>{film.film_id}</td>
-              <td>{film.title}</td>
-              <td>{film.genre}</td>
-              <td>{Number(film.is_active) === 1 ? "Aktív" : "Inaktív"}</td>
-              <td>
-                <button onClick={() => handleEdit(film)}>Szerkeszt</button>
-                <button onClick={() => handleDelete(film.film_id)}>Deaktivál</button>
-                {film.is_active === 0 && (
-                  <button onClick={() => handleReactivate(film.film_id)}>
-                    Aktiválás
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
+          {films
+          .filter(film =>
+          film.title.toLowerCase().includes(search.toLowerCase())
+          )
+          .map(film => (
+          <tr key={film.film_id}>
+            <td>{film.film_id}</td>
+            <td>{film.title}</td>
+            <td>{film.description}</td>
+            <td>{film.duration_minutes}</td>
+            <td>{film.release_year}</td>
+            <td>{film.genre}</td>
+            <td>{Number(film.is_active) === 1 ? "Aktív" : "Inaktív"}</td>
+            <td>
+              <button onClick={() => handleEdit(film)}>Szerkeszt</button>
+              <button onClick={() => handleDelete(film.film_id)}>Deaktivál</button>
+              {film.is_active === 0 && (
+              <button onClick={() => handleReactivate(film.film_id)}>
+                Aktiválás
+              </button>
+              )}
+            </td>
+          </tr>
+        ))}
         </tbody>
       </table>
     </div>
