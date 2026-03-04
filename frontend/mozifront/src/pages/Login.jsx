@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { getUserRole } from "../utils/auth";
+import Navbar from "../components/Navbar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -27,19 +28,28 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Bejelentkezés</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Jelszó"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <Navbar/>
+        <div className="container">
+          <form onSubmit={handleSubmit}>
+            <h2>Bejelentkezés</h2>
+            <input
+              type="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Jelszó"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit">Login</button>
+            <p>
+                Nincs még fiókod?
+              <a href="/register"> Regisztráció</a>
+            </p>
+          </form>
+        </div>
+    </div>
   );
 }

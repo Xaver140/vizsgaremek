@@ -5,7 +5,9 @@ export default function Fooldal() {
   return (
     <div>
         <Navbar/>
-      <p>Üdvözlünk az oldalon</p>
+        <div className="container">
+            <p>Üdvözlünk az oldalon</p>
+        </div>
     </div>
   );
 }

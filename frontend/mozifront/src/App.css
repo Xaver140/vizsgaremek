@@ -1,42 +1,150 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* alap reset */
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+/* oldal */
+body{
+  background:#f4f4f4;
+  color:#222;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.container{
+  max-width:1000px;
+  margin:0 auto;
+  padding:20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* NAVBAR */
+
+nav{
+  width:100%;
+  background:#111;
+}
+
+.nav-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-left{
+  display:flex;
+  gap:20px;
+}
+
+.nav-right{
+  display:flex;
+  gap:10px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+}
+
+nav a:hover{
+  text-decoration:underline;
+}
+
+/* GOMBOK */
+
+button{
+  padding:8px 14px;
+  border:none;
+  background:#ff7a00;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#e86d00;
+}
+
+/* INPUT */
+
+input{
+  padding:8px;
+  margin:5px 0;
+  border:1px solid #ccc;
+  border-radius:4px;
+}
+
+/* OLDAL TARTALOM */
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+/* FILM LISTA */
+
+.film-card{
+  padding:20px 0;
+  border-bottom:1px solid #ccc;
+}
+
+.film-info h2{
+  margin-bottom:5px;
+}
+
+.vetitesek{
+  margin-top:10px;
+}
+
+.vetitesek button{
+  margin-right:10px;
+  margin-top:5px;
+}
+
+/* ADMIN TÁBLA */
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th, td{
+  padding:10px;
+  border:1px solid #ccc;
+  text-align:left;
+}
+
+th{
+  background:#eee;
+}
+
+/* ŰRLAP */
+
+form{
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+form input{
+  display:block;
+  width:250px;
+}
+
+/* RESZPONZÍV */
+
+@media (max-width:700px){
+
+  .film-card{
+    flex-direction:column;
   }
-  to {
-    transform: rotate(360deg);
+
+  nav{
+    flex-direction:column;
+    gap:10px;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
