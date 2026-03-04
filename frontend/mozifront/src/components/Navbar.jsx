@@ -1,43 +1,49 @@
 import { Link } from "react-router-dom";
 import { getUserRole } from "../utils/auth";
 
-export default function Navbar() {
+export default function Navbar(){
 
   const role = getUserRole();
 
   const logout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    window.location.reload();
   };
 
-  return (
-    <nav style={{
-      display: "flex",
-      justifyContent: "space-between",
-      padding: "10px",
-      borderBottom: "1px solid gray"
-    }}>
+  return(
+    <nav>
 
-      <div style={{ display: "flex", gap: "20px" }}>
-        <Link to="/">Főoldal</Link>
-        <Link to="/filmek">Filmek</Link>
+      <div className="nav-container">
 
-        {role === "admin" && (
-          <Link to="/admin">Admin</Link>
-        )}
+        <div className="nav-left">
+          <Link to="/">Főoldal</Link>
+          <Link to="/filmek">Filmek</Link>
 
-        {role && <Link to="/profil">Profil</Link>}
+          {role === "admin" && (
+            <Link to="/admin">Admin</Link>
+          )}
+        </div>
+
+        <div className="nav-right">
+
+          {!role && (
+            <>
+              <Link to="/login">
+                <button>Bejelentkezés</button>
+              </Link>
+
+              <Link to="/register">
+                <button>Regisztráció</button>
+              </Link>
+            </>
+          )}
+          {role && (
+            <button onClick={logout}>
+              Kijelentkezés
+            </button>
+          )}
+        </div>
       </div>
-
-      <div>
-        {role ? (
-          <button onClick={logout}>Kijelentkezés</button>
-        ) : (
-          <Link to="/login"><button>Bejelentkezés</button></Link>
-        )}
-        <Link to="/register"><button>Regisztráció</button></Link>
-      </div>
-
     </nav>
   );
 }

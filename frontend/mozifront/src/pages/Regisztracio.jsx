@@ -39,19 +39,26 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <Navbar />
-      <h1>Regisztráció</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text"name="full_name"placeholder="Teljes név"value={form.full_name}onChange={handleChange}required/>
-        <br/>
-        <input type="email"name="email"placeholder="Email"value={form.email}onChange={handleChange}required/>
-        <br/>
-        <input type="password"name="password"placeholder="Jelszó"value={form.password}onChange={handleChange}required/>
-        <br/>
-        <button type="submit">Regisztráció</button>
-      </form>
-      {message && <p>{message}</p>}
+  <div>
+    
+    <Navbar/>
+    <div className="container">
+
+      <div className="content">
+        <h1>Regisztráció</h1>
+
+        <form onSubmit={handleSubmit}>
+
+          <input type="text"name="full_name"placeholder="Teljes név"value={form.full_name}onChange={handleChange}required/>
+          <br/>
+          <input type="email"name="email"placeholder="Email"value={form.email}onChange={handleChange}required/>
+          <br/>
+          <input type="password"name="password"placeholder="Jelszó"value={form.password}onChange={handleChange}required/>
+          <br/>
+          <button type="submit">Regisztráció</button>
+        </form>
+      </div>
     </div>
-  );
-}
+  </div>
+);
+};

@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Adminkezelo from "./pages/Admin";
 import Userkezelo from "./pages/Filmek";
 import Register from "./pages/Regisztracio";
+import "./App.css";
 export default function App() {
   return (
     <BrowserRouter>
