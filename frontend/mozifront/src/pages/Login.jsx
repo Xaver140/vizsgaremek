@@ -40,6 +40,10 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Login</button>
+      <p>
+          Nincs még fiókod?
+        <a href="/register"> Regisztráció</a>
+      </p>
     </form>
   );
 }

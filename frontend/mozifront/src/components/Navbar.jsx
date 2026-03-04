@@ -33,10 +33,9 @@ export default function Navbar() {
         {role ? (
           <button onClick={logout}>Kijelentkezés</button>
         ) : (
-          <Link to="/login">
-            <button>Bejelentkezés</button>
-          </Link>
+          <Link to="/login"><button>Bejelentkezés</button></Link>
         )}
+        <Link to="/register"><button>Regisztráció</button></Link>
       </div>
 
     </nav>
