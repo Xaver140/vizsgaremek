@@ -22,6 +22,7 @@ A frontend működéséhez szükséges csomagok telepítéséhez futtassa az al�
 
 ```bash
 npm install axios react jwt-decode react-dom react-router-dom
+vagy npm install
 ```
 
 ---
