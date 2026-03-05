@@ -85,32 +85,74 @@ namespace asztali
                 return;
             }
 
-            string newEmail = Microsoft.VisualBasic.Interaction.InputBox("Új email:");
+            string[] parts = listBox1.SelectedItem.ToString().Split(';');
+            string oldName = parts[0].Trim();
+            string oldPhone = parts.Length > 1 ? parts[1].Trim() : "";
+            string oldEmail = parts.Length > 2 ? parts[2].Trim() : "";
 
-            if (string.IsNullOrWhiteSpace(newEmail))
+            // Új értékek (alapból marad a régi)
+            string newName = oldName;
+            string newPhone = oldPhone;
+            string newEmail = oldEmail;
+
+            // 1) Név
+            var ansName = MessageBox.Show("A nevét kívánja módosítani?", "Update", MessageBoxButtons.YesNo);
+            if (ansName == DialogResult.Yes)
+            {
+                string input = Microsoft.VisualBasic.Interaction.InputBox("Új név:", "Név módosítása", oldName);
+                if (!string.IsNullOrWhiteSpace(input)) newName = input.Trim();
+            }
+
+            // 2) Telefon
+            var ansPhone = MessageBox.Show("A telefonszámát kívánja módosítani?", "Update", MessageBoxButtons.YesNo);
+            if (ansPhone == DialogResult.Yes)
+            {
+                string input = Microsoft.VisualBasic.Interaction.InputBox("Új telefonszám:", "Telefon módosítása", oldPhone);
+                if (!string.IsNullOrWhiteSpace(input)) newPhone = input.Trim();
+            }
+
+            // 3) Email
+            var ansEmail = MessageBox.Show("Az email címét kívánja módosítani?", "Update", MessageBoxButtons.YesNo);
+            if (ansEmail == DialogResult.Yes)
+            {
+                string input = Microsoft.VisualBasic.Interaction.InputBox("Új email:", "Email módosítása", oldEmail);
+                if (!string.IsNullOrWhiteSpace(input)) newEmail = input.Trim();
+            }
+
+            // Ha semmit nem változtatott
+            if (newName == oldName && newPhone == oldPhone && newEmail == oldEmail)
+            {
+                MessageBox.Show("Nem történt módosítás.");
                 return;
+            }
 
             try
             {
-                var selected = listBox1.SelectedItem.ToString().Split(';')[0];
-
-                using (var conn = new MySql.Data.MySqlClient.MySqlConnection(cs))
+                using (var conn = new MySqlConnection(cs))
                 {
                     conn.Open();
 
-                    using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(
-                        "UPDATE users SET email=@e WHERE fulltext=@t", conn))
+                    // Frissítés: beállítjuk az új értékeket
+                    // Azonosítás: az eredeti adatok alapján (amíg nincs ID)
+                    using (var cmd = new MySqlCommand(
+                        @"UPDATE users
+                  SET full_name=@newName, phone_number=@newPhone, email=@newEmail
+                  WHERE full_name=@oldName AND phone_number=@oldPhone AND email=@oldEmail",
+                        conn))
                     {
+                        cmd.Parameters.AddWithValue("@newName", newName);
+                        cmd.Parameters.AddWithValue("@newPhone", newPhone);
+                        cmd.Parameters.AddWithValue("@newEmail", newEmail);
 
-                        cmd.CommandText = "UPDATE users SET email='" + newEmail.Trim() + "' WHERE full_name='" + selected.ToString() +"';";
+                        cmd.Parameters.AddWithValue("@oldName", oldName);
+                        cmd.Parameters.AddWithValue("@oldPhone", oldPhone);
+                        cmd.Parameters.AddWithValue("@oldEmail", oldEmail);
 
-                        cmd.Parameters.AddWithValue("@e", newEmail.Trim());
-                        cmd.Parameters.AddWithValue("@t", selected);
-
-                        Clipboard.SetText(cmd.CommandText);
-                        cmd.ExecuteNonQuery();
+                        int rows = cmd.ExecuteNonQuery();
+                        MessageBox.Show($"Módosított sorok: {rows}");
                     }
                 }
+
 
                 LoadList(); // ezután jön a gond nálad -> ott lesz a hiba
             }
