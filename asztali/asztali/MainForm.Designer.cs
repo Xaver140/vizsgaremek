@@ -28,30 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dgvFilmek = new DataGridView();
             btnLoadFilmek = new Button();
             label1 = new Label();
             btnBack = new Button();
             Adatbázis = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvFilmek).BeginInit();
+            listBoxFilmek = new ListBox();
             SuspendLayout();
-            // 
-            // dgvFilmek
-            // 
-            dgvFilmek.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvFilmek.Location = new Point(27, 24);
-            dgvFilmek.Name = "dgvFilmek";
-            dgvFilmek.Size = new Size(150, 111);
-            dgvFilmek.TabIndex = 0;
             // 
             // btnLoadFilmek
             // 
-            btnLoadFilmek.Location = new Point(230, 20);
+            btnLoadFilmek.Location = new Point(424, 20);
             btnLoadFilmek.Name = "btnLoadFilmek";
             btnLoadFilmek.Size = new Size(180, 147);
             btnLoadFilmek.TabIndex = 1;
             btnLoadFilmek.Text = "Filmek betöltése";
             btnLoadFilmek.UseVisualStyleBackColor = true;
+            btnLoadFilmek.Click += btnLoadFilmek_Click_1;
             // 
             // label1
             // 
@@ -82,29 +74,36 @@
             Adatbázis.UseVisualStyleBackColor = true;
             Adatbázis.Click += button1_Click;
             // 
+            // listBoxFilmek
+            // 
+            listBoxFilmek.FormattingEnabled = true;
+            listBoxFilmek.ItemHeight = 15;
+            listBoxFilmek.Location = new Point(12, 20);
+            listBoxFilmek.Name = "listBoxFilmek";
+            listBoxFilmek.Size = new Size(406, 244);
+            listBoxFilmek.TabIndex = 5;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(listBoxFilmek);
             Controls.Add(Adatbázis);
             Controls.Add(btnBack);
             Controls.Add(label1);
             Controls.Add(btnLoadFilmek);
-            Controls.Add(dgvFilmek);
             Name = "MainForm";
             Text = "Main Form";
-            ((System.ComponentModel.ISupportInitialize)dgvFilmek).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private DataGridView dgvFilmek;
         private Button btnLoadFilmek;
         private Label label1;
         private Button btnBack;
         private Button Adatbázis;
+        private ListBox listBoxFilmek;
     }
 }

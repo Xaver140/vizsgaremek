@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,8 @@ namespace asztali
     {
         private readonly ApiClient _api;
 
+        string cs = "server=localhost;uid=root;database=mozi_adat;port=3307;pwd=;";
+
         public MainForm() : this(new ApiClient("http://localhost:3000"))
         {
         }
@@ -24,18 +27,9 @@ namespace asztali
             _api = api;
         }
 
-        private async void btnLoadFilmek_Click(object sender, EventArgs e)
+        private void btnLoadFilmek_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var filmek = await _api.GetAsync<List<FilmDto>>("/filmek/");
-                dgvFilmek.AutoGenerateColumns = true;
-                dgvFilmek.DataSource = filmek;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Filmek betöltése hiba: " + ex.Message);
-            }
+
         }
         private void btnBack_Click(object sender, EventArgs e)
         {
@@ -62,6 +56,39 @@ namespace asztali
             }
 
             this.Show();
+        }
+
+        private void btnLoadFilmek_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                listBoxFilmek.Items.Clear();
+
+                using (MySqlConnection conn = new MySqlConnection(cs))
+                {
+                    conn.Open();
+
+                    string sql = "SELECT title, duration_minutes, release_year, genre FROM filmek WHERE is_active = 1";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string title = reader["title"].ToString();
+                            string duration = reader["duration_minutes"].ToString();
+                            string release = reader["release_year"].ToString();
+                            string genre = reader["genre"].ToString();
+
+                            listBoxFilmek.Items.Add($"{title} | {duration} perc | {release} | {genre}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Filmek betöltése hiba: " + ex.ToString());
+            }
         }
     }
 
