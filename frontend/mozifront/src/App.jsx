@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Adminkezelo from "./pages/Admin";
 import Userkezelo from "./pages/Filmek";
 import Register from "./pages/Regisztracio";
+import Szekfog from "./pages/Szekfog";
 import "./App.css";
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/admin" element={<Adminkezelo />} />
         <Route path="/filmek" element={<Userkezelo />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/foglalas/:vetitesId" element={<Szekfog />} />
       </Routes>
     </BrowserRouter>
   );
