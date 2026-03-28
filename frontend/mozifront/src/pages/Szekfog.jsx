@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import Navbar from "../components/Navbar";
 
 export default function Szekfog() {
   const { vetitesId } = useParams();
+  const navigate = useNavigate();
 
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]); // ✅ tömb
@@ -65,15 +66,22 @@ export default function Szekfog() {
       return;
     }
 
-    try {
-      await api.post("/foglalas", {
+    try
+    {
+      const res = await api.post("/foglalas", {
         vetites_id: vetitesId,
         ules_ids: selectedSeats.map(s => s.ules_id),
         final_price: 2200 * selectedSeats.length
       });
 
+      // 🔥 ide:
       alert("Foglalás sikeres!");
-      window.location.reload();
+      navigate("/fizetes", {
+        state: {
+        konyveles_ids: res.data.konyveles_ids,
+        amount: 2200 * selectedSeats.length
+        }
+      });
 
     } catch (err) {
       alert(err.response?.data?.error || "Hiba történt");
