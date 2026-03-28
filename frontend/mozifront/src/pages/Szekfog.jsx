@@ -7,33 +7,68 @@ export default function Szekfog() {
   const { vetitesId } = useParams();
 
   const [seats, setSeats] = useState([]);
-  const [selectedSeat, setSelectedSeat] = useState(null);
+  const [selectedSeats, setSelectedSeats] = useState([]); // ✅ tömb
 
-  // székek lekérése
+  // adatok lekérése
   useEffect(() => {
     api.get(`/vetites/${vetitesId}/ulesek`)
-      .then(res => setSeats(res.data))
-      .catch(err => console.error(err));
-  }, [vetitesId]);
+      .then(res => setSeats(res.data));
+  }, []);
 
-  // csoportosítás sorok szerint (A, B, C)
+  // csoportosítás sorok szerint
   const groupedSeats = seats.reduce((acc, seat) => {
     if (!acc[seat.row_number]) acc[seat.row_number] = [];
     acc[seat.row_number].push(seat);
     return acc;
   }, {});
 
-  // foglalás
+  // foglalt?
+  const isBooked = (seat) => seat.foglalt === 1;
+
+  // kiválasztott?
+  const isSelected = (seat) => {
+    return selectedSeats.some(
+      s =>
+        s.row_number === seat.row_number &&
+        s.seat_number === seat.seat_number
+    );
+  };
+
+  // kattintás
+  const handleSeatClick = (seat) => {
+  if (isBooked(seat)) return;
+
+  if (isSelected(seat)) {
+    // kivétel
+    setSelectedSeats(prev =>
+      prev.filter(
+        s =>
+          !(s.row_number === seat.row_number &&
+            s.seat_number === seat.seat_number)
+      )
+    );
+  } else {
+    // 🔥 LIMIT
+    if (selectedSeats.length >= 5) {
+      alert("Maximum 5 helyet választhatsz!");
+      return;
+    }
+
+    setSelectedSeats(prev => [...prev, seat]);
+  }
+};
+
+  // foglalás (egyenlőre 1 szék)
   const handleBooking = async () => {
-    if (!selectedSeat) {
-      alert("Válassz egy széket!");
+    if (selectedSeats.length === 0) {
+      alert("Válassz széket!");
       return;
     }
 
     try {
       await api.post("/foglalas", {
         vetites_id: vetitesId,
-        ules_id: selectedSeat,
+        ules_id: selectedSeats[0].ules_id, // egyelőre 1
         final_price: 2200
       });
 
@@ -62,6 +97,9 @@ export default function Szekfog() {
           Vászon
         </div>
 
+        {/* legenda */}
+        <p>🟢 Szabad | 🟠 Kiválasztott | ⚫ Foglalt</p>
+
         {/* székek */}
         {Object.keys(groupedSeats).map(row => (
           <div key={row} style={{ marginBottom: "10px" }}>
@@ -70,19 +108,21 @@ export default function Szekfog() {
             {groupedSeats[row].map(seat => (
               <button
                 key={seat.ules_id}
-                disabled={seat.foglalt}
-                onClick={() => setSelectedSeat(seat.ules_id)}
+                onClick={() => handleSeatClick(seat)}
                 style={{
                   margin: "5px",
                   width: "50px",
                   height: "50px",
                   border: "none",
-                  cursor: seat.foglalt ? "not-allowed" : "pointer",
-                  backgroundColor: seat.foglalt
-                    ? "red"
-                    : selectedSeat === seat.ules_id
-                    ? "blue"
-                    : "green",
+                  cursor: isBooked(seat) ? "not-allowed" : "pointer",
+
+                  backgroundColor:
+                    isBooked(seat)
+                      ? "gray"
+                      : isSelected(seat)
+                      ? "orange"
+                      : "green",
+
                   color: "white"
                 }}
               >

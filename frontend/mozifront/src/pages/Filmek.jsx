@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import Navbar from "../components/Navbar";
 
 export default function Filmek(){
 
+  const navigate = useNavigate();
   const [films,setFilms] = useState([]);
   const [vetitesek,setVetitesek] = useState({});
   const [selectedDate,setSelectedDate] = useState(new Date());
@@ -96,7 +98,7 @@ export default function Filmek(){
                   )
                 })
                 .map(v=>(
-                  <button key={v.vetites_id}>{new Date(v.start_time).toLocaleTimeString("hu-HU",{hour:"2-digit",minute:"2-digit"})}</button>
+                  <button key={v.vetites_id} onClick={() => navigate(`/foglalas/${v.vetites_id}`)}>{new Date(v.start_time).toLocaleTimeString("hu-HU",{hour:"2-digit",minute:"2-digit"})}</button>
                 ))
               }
             </div>

@@ -5,10 +5,20 @@ import db from "../db.js";
 
 const router = express.Router();
 
-// regisztráció
+// REGISZTRÁCIÓ
 router.post("/register", async (req, res) => {
   try {
     const { email, password, full_name } = req.body;
+
+    // email ellenőrzés
+    const [existing] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+
+    if (existing.length) {
+      return res.status(400).json({ error: "Email már létezik" });
+    }
 
     const hash = await bcrypt.hash(password, 10);
 
@@ -19,46 +29,53 @@ router.post("/register", async (req, res) => {
 
     res.json({ message: "Sikeres regisztráció" });
 
-//ideiglenes teszthez
   } catch (err) {
-  console.error("Reg hiba:", err);
-  res.status(500).json({
-    error: err.message,
-    code: err.code
-  });
+    console.error("Reg hiba:", err);
+    res.status(500).json({
+      error: err.message,
+      code: err.code
+    });
   }
 });
 
-// bejelentkezés
+
+// LOGIN
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const [rows] = await db.query(
-    "SELECT * FROM users WHERE email = ?",
-    [email]
-  );
+    const [rows] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
 
-  if (!rows.length) {
-    return res.status(401).json({ error: "Hibás email vagy jelszó" });
+    if (!rows.length) {
+      return res.status(401).json({ error: "Hibás email vagy jelszó" });
+    }
+
+    const user = rows[0];
+
+    const ok = await bcrypt.compare(password, user.password_hash);
+
+    if (!ok) {
+      return res.status(401).json({ error: "Hibás email vagy jelszó" });
+    }
+
+    const token = jwt.sign(
+      {
+        user_id: user.user_id,
+        is_admin: user.is_admin
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({ token });
+
+  } catch (err) {
+    console.error("Login hiba:", err);
+    res.status(500).json({ error: "Szerver hiba" });
   }
-
-  const user = rows[0];
-  const ok = await bcrypt.compare(password, user.password_hash);
-
-  if (!ok) {
-    return res.status(401).json({ error: "Hibás email vagy jelszó" });
-  }
-
-  const token = jwt.sign(
-    {
-      user_id: user.user_id,
-      is_admin: user.is_admin
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" }
-  );
-
-  res.json({ token });
 });
 
 export default router;

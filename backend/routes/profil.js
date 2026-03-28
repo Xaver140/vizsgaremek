@@ -1,20 +1,29 @@
-import express from "express";
-import db from "../db.js";
-import auth from "../middleware/authmiddleware.js";
+import bcrypt from "bcrypt";
 
-const router = express.Router();
+router.put("/", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+    const { full_name, phone_number, email, password } = req.body;
 
-//adatok lekérése a felhasználó foglalásairól
-router.get("/", auth, async (req, res) => {
-  const [rows] = await db.query(`
-    SELECT k.*, f.title
-    FROM konyveles k
-    JOIN vetites v ON k.vetites_id = v.vetites_id
-    JOIN filmek f ON v.film_id = f.film_id
-    WHERE k.user_id = ?
-  `, [req.user.user_id]);
+    // alap update
+    await db.query(
+      "UPDATE users SET full_name = ?, phone_number = ?, email = ? WHERE user_id = ?",
+      [full_name, phone_number, email, userId]
+    );
 
-  res.json(rows);
+    // jelszó csak ha meg van adva
+    if (password && password.trim() !== "") {
+      const hash = await bcrypt.hash(password, 10);
+
+      await db.query(
+        "UPDATE users SET password_hash = ? WHERE user_id = ?",
+        [hash, userId]
+      );
+    }
+
+    res.json({ message: "Profil frissítve" });
+
+  } catch (err) {
+    res.status(500).json({ error: "Hiba mentéskor" });
+  }
 });
-
-export default router;
