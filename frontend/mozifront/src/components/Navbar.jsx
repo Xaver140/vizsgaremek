@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getUserRole } from "../utils/auth";
 
 export default function Navbar(){
 
   const role = getUserRole();
+  const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem("token");
-    window.location.reload();
+    navigate("/login");
   };
 
   return(
@@ -18,6 +19,7 @@ export default function Navbar(){
         <div className="nav-left">
           <Link to="/">Főoldal</Link>
           <Link to="/filmek">Filmek</Link>
+          {role && <Link to="/profil">Profil</Link>}
 
           {role === "admin" && (
             <Link to="/admin">Admin</Link>

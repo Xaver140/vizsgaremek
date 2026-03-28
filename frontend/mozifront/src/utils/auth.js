@@ -6,8 +6,17 @@ export function getUserRole() {
 
   try {
     const decoded = jwtDecode(token);
-    return decoded.is_admin ? "admin" : "user";
+
+    // ⛔ lejárt token törlése
+    if (decoded.exp * 1000 < Date.now()) {
+      localStorage.removeItem("token");
+      return null;
+    }
+
+    return decoded.is_admin === 1 ? "admin" : "user";
+
   } catch {
+    localStorage.removeItem("token");
     return null;
   }
 }

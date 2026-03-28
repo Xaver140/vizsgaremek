@@ -15,6 +15,7 @@ import filmRoutes from './routes/filmek.js';
 import vetitesRoutes from './routes/vetitesek.js';
 import foglalasRoutes from './routes/foglalasok.js';
 import profilRoutes from './routes/profil.js';
+import fizetesRoutes from "./routes/fizetes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -35,6 +36,7 @@ app.use('/filmek', filmRoutes);
 app.use('/vetites', vetitesRoutes);
 app.use('/foglalas', foglalasRoutes);
 app.use('/profil', profilRoutes);
+app.use("/fizetes", fizetesRoutes);
 
 app.get("/", (req, res) => res.send("Az alap index müködik!"));
 
