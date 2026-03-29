@@ -14,7 +14,7 @@ namespace asztali
 {
     public partial class DatabaseForm : Form
     {
-        string cs = "server=localhost;uid=root;database=mozi_adat;port=3307;pwd=;";
+        string cs = "server=localhost;uid=root;database=mozi_adat;port=3306;pwd=;";
         public DatabaseForm()
         {
             InitializeComponent();

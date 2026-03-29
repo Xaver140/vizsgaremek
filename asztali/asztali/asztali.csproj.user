@@ -4,6 +4,9 @@
     <Compile Update="DatabaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FilmEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
