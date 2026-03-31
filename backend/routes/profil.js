@@ -4,7 +4,7 @@ import express from "express";
 import db from "../db.js";
 
 const router = express.Router();
-
+// A felhasználó adatai + a foglalásai
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.user_id;
@@ -36,6 +36,8 @@ router.get("/", authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Hiba profil lekérésnél" });
   }
 });
+
+// a profil belül szerkesztés
 router.put("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.user_id;
@@ -47,7 +49,7 @@ router.put("/", authMiddleware, async (req, res) => {
       [full_name, phone_number, email, userId]
     );
 
-    // jelszó csak ha meg van adva
+    // jelszó csak ha meg van adva(bejelentkezve)
     if (password && password.trim() !== "") {
       const hash = await bcrypt.hash(password, 10);
 

@@ -8,7 +8,7 @@ export default function Szekfog() {
   const navigate = useNavigate();
 
   const [seats, setSeats] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]); // ✅ tömb
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   // adatok lekérése
   useEffect(() => {
@@ -28,11 +28,7 @@ export default function Szekfog() {
 
   // kiválasztott?
   const isSelected = (seat) => {
-    return selectedSeats.some(
-      s =>
-        s.row_number === seat.row_number &&
-        s.seat_number === seat.seat_number
-    );
+    return selectedSeats.some(s => s.row_number === seat.row_number && s.seat_number === seat.seat_number);
   };
 
   // kattintás
@@ -49,7 +45,7 @@ export default function Szekfog() {
       )
     );
   } else {
-    // 🔥 LIMIT
+    // foglalás limit!!!!!
     if (selectedSeats.length >= 5) {
       alert("Maximum 5 helyet választhatsz!");
       return;
@@ -59,7 +55,6 @@ export default function Szekfog() {
   }
 };
 
-  // foglalás (egyenlőre 1 szék)
   const handleBooking = async () => {
     if (selectedSeats.length === 0) {
       alert("Válassz széket!");
@@ -74,7 +69,7 @@ export default function Szekfog() {
         final_price: 2200 * selectedSeats.length
       });
 
-      // 🔥 ide:
+
       alert("Foglalás sikeres!");
       navigate("/fizetes", {
         state: {
@@ -95,7 +90,6 @@ export default function Szekfog() {
       <div className="container">
         <h2>Székfoglalás</h2>
 
-        {/* vászon */}
         <div style={{
           textAlign: "center",
           marginBottom: "20px",
@@ -105,8 +99,7 @@ export default function Szekfog() {
           Vászon
         </div>
 
-        {/* legenda */}
-        <p>🟢 Szabad | 🟠 Kiválasztott | ⚫ Foglalt</p>
+        <p>Zöld Szabad | Narancs Kiválasztott | fekete/szürke Foglalt</p>
 
         {/* székek */}
         {Object.keys(groupedSeats).map(row => (
