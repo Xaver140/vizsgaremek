@@ -15,7 +15,7 @@ namespace asztali
     {
         private readonly ApiClient _api;
 
-        string cs = "server=localhost;uid=root;database=mozi_adat;port=3306;pwd=;";
+        string cs = "server=localhost;uid=root;database=mozi_adat;port=3307;pwd=;";
 
         public MainForm() : this(new ApiClient("http://localhost:3000"))
         {
