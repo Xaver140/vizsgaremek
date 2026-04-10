@@ -79,7 +79,6 @@ export default function Profil() {
     setEditMode(false);
   };
 
-  // 🔥 FOGLALÁSOK CSOPORTOSÍTÁSA (JAVÍTOTT)
   const groupedBookings = Object.values(
   bookings.reduce((acc, b) => {
 

@@ -1,4 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+
+// oldalak
 import Fooldal from "./pages/Fooldal";
 import Login from "./pages/Login";
 import Adminkezelo from "./pages/Admin";
@@ -24,10 +29,7 @@ export default function App() {
           minHeight: "100vh"
         }}
       >
-        {/* NAVBAR MINDENHOL */}
         <Navbar />
-
-        {/* OLDAL TARTALOM */}
         <div style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<Fooldal />} />
@@ -42,7 +44,6 @@ export default function App() {
           </Routes>
         </div>
 
-        {/* FOOTER MINDENHOL */}
         <Footer />
       </div>
     </BrowserRouter>

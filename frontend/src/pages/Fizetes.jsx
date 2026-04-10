@@ -19,7 +19,7 @@ export default function Fizetes(){
         method
         });
 
-        setPaid(true); // 🔥 EZ KELL
+        setPaid(true);
 
         alert("Fizetés sikeres!");
         navigate("/profil");

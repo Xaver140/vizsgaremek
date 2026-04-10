@@ -23,6 +23,47 @@ export default function Fooldal() {
 
   return (
     <div>
+      <div style={{
+  position: "relative",
+  height: "400px",
+  backgroundImage: "url('/images/mozihero.webp')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center"
+}}>
+
+  <div style={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "rgba(0,0,0,0.6)"
+  }}></div>
+
+  <div style={{
+    position: "relative",
+    color: "white",
+    textAlign: "center"
+  }}>
+    <h1 style={{
+      fontSize: "40px",
+      fontWeight: "bold"
+    }}>
+      Köszöntjük mozinkban
+    </h1>
+
+    <p style={{
+      fontSize: "18px",
+      marginTop: "10px"
+    }}>
+      Fedezd fel a legjobb filmeket és foglalj jegyet egyszerűen!
+    </p>
+  </div>
+
+</div>
       <h2 style={{ textAlign: "center", marginTop: "20px" }}>MŰSORON</h2>
 
       <div style={{ position: "relative", width: "100%" }}>
@@ -31,7 +72,6 @@ export default function Fooldal() {
           ❮
         </button>
 
-        {/* FILM SOR */}
         <div
           ref={scrollRef}
           style={{
