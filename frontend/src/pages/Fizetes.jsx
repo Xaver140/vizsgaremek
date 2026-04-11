@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Navbar from "../components/Navbar";
+import { useState, useEffect } from "react";
 import api from "../api/api";
 
 export default function Fizetes(){
@@ -10,26 +9,37 @@ export default function Fizetes(){
     const { konyveles_ids, amount } = location.state || {};
 
     const [method, setMethod] = useState("credit_card");
+    const [paid, setPaid] = useState(false);
 
     const handlePayment = async () => {
     try {
-      await api.post("/fizetes", {
+        await api.post("/fizetes", {
         konyveles_ids,
         amount,
         method
-      });
-      alert("Fizetés sikeres!");
-      navigate("/profil");
-    }catch(err)
-        {
+        });
+
+        setPaid(true);
+
+        alert("Fizetés sikeres!");
+        navigate("/profil");
+
+        } catch (err) {
             console.log(err);
-            console.log(err.response);
             alert(err.response?.data?.error || "Hiba fizetésnél");
         }
     };
+    useEffect(() => {
+  return () => {
+    if (!paid && konyveles_ids?.length > 0) {
+      api.delete("/foglalas/cancel", {
+        data: { konyveles_ids }
+        });
+        }
+    };
+    }, [paid]);
     return (
         <div>
-            <Navbar />
             <div className="container">
                 <h2>Fizetés</h2>
 

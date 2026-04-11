@@ -17,7 +17,7 @@ router.get("/", authMiddleware, async (req, res) => {
 
     // foglalások
     const [bookingRows] = await db.query(`
-      SELECT k.konyveles_id, f.title, v.start_time, u.row_number, u.seat_number, k.final_price
+      SELECT k.konyveles_id,k.vetites_id,k.booking_time, f.title, v.start_time, u.row_number, u.seat_number, k.final_price
       FROM konyveles k
       JOIN vetites v ON k.vetites_id = v.vetites_id
       JOIN filmek f ON v.film_id = f.film_id

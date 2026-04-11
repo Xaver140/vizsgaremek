@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
-import Navbar from "../components/Navbar";
 
 export default function Szekfog() {
   const { vetitesId } = useParams();
@@ -10,7 +9,7 @@ export default function Szekfog() {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  // adatok lekérése
+  // adatok lekérés
   useEffect(() => {
     api.get(`/vetites/${vetitesId}/ulesek`)
       .then(res => setSeats(res.data));
@@ -79,13 +78,19 @@ export default function Szekfog() {
       });
 
     } catch (err) {
-      alert(err.response?.data?.error || "Hiba történt");
+      if(err.response?.status === 401){
+        alert("Nem vagy bejelentkezve!");
+        navigate("/login");
+        return;
+      }
+      else {alert(err.response?.data?.error || "Hiba történt a foglalás során.");
+        console.error(err);
+      }
     }
   };
 
   return (
     <div>
-      <Navbar />
 
       <div className="container">
         <h2>Székfoglalás</h2>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import api from "../api/api";
 
@@ -79,7 +78,6 @@ export default function Adminkezelo() {
 
   return (
     <div>
-      <Navbar search={search} setSearch={setSearch} isAdmin={true} />
       <h1>Admin - Film kezelés</h1>
 
       <h3>{editingId ? "Film szerkesztése" : "Új film hozzáadása"}</h3>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
-import Navbar from "../components/Navbar";
 
 export default function Register() {
 
@@ -41,7 +40,6 @@ export default function Register() {
   return (
   <div>
     
-    <Navbar/>
     <div className="container">
 
       <div className="content">
