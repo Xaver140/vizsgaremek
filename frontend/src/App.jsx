@@ -29,6 +29,7 @@ export default function App() {
           minHeight: "100vh"
         }}
       >
+        
         <Navbar />
         <div style={{ flex: 1 }}>
           <Routes>
