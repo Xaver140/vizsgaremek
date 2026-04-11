@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import api from "../api/api";
 
+
+
 export default function Adminkezelo() {
+
   const [search, setSearch] = useState("");
   const [films, setFilms] = useState([]);
   const [editingId, setEditingId] = useState(null);
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -20,10 +24,9 @@ export default function Adminkezelo() {
   }, []);
 
   const fetchFilms = async () => {
-  const res = await api.get("/admin/filmek");
-  console.log(res.data);
-  setFilms(res.data);
-};
+    const res = await api.get("/admin/filmek");
+    setFilms(res.data);
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,7 +52,6 @@ export default function Adminkezelo() {
     fetchFilms();
   };
 
-  // ✅ JAVÍTOTT handleEdit
   const handleEdit = (film) => {
     setEditingId(film.film_id);
     setForm({
@@ -61,13 +63,11 @@ export default function Adminkezelo() {
       is_active: film.is_active
     });
   };
-
   const handleDelete = async (id) => {
     await api.delete(`/admin/filmek/${id}`);
     fetchFilms();
   };
 
-  // visszaaktiválás
   const handleReactivate = async (id) => {
     await api.put(`/admin/filmek/${id}`, {
       ...films.find(f => f.film_id === id),
@@ -77,67 +77,94 @@ export default function Adminkezelo() {
   };
 
   return (
-    <div>
-      <h1>Admin - Film kezelés</h1>
+    <div className="container py-4">
+      {/* NEM TELJES!! HIBÁS LESZ A FELTÖLTÉS */ }
+      <h2 className="mb-4">Admin - Film kezelés</h2>
 
-      <h3>{editingId ? "Film szerkesztése" : "Új film hozzáadása"}</h3>
+      <div className="card p-3 mb-4">
+        <h5>{editingId ? "Film szerkesztése" : "Új film hozzáadása"}</h5>
 
-      <input name="title" placeholder="Cím" value={form.title} onChange={handleChange} />
-      <input name="description" placeholder="Leírás" value={form.description} onChange={handleChange} />
-      <input name="duration_minutes" placeholder="Hossz (perc)" value={form.duration_minutes} onChange={handleChange} />
-      <input name="release_year" placeholder="Év" value={form.release_year} onChange={handleChange} />
-      <input name="genre" placeholder="Műfaj" value={form.genre} onChange={handleChange} />
+        <div className="row g-2">
 
-      <button onClick={handleSubmit}>
-        {editingId ? "Frissítés" : "Hozzáadás"}
-      </button>
+          <div className="col-md-4">
+            <input className="form-control" name="title" placeholder="Cím" value={form.title} onChange={handleChange} />
+          </div>
+          <div className="col-md-4">
+            <input className="form-control" name="genre" placeholder="Műfaj" value={form.genre} onChange={handleChange} />
+          </div>
+          <div className="col-md-2">
+            <input className="form-control" name="duration_minutes" placeholder="Perc" value={form.duration_minutes} onChange={handleChange} />
+          </div>
+          <div className="col-md-2">
+            <input className="form-control" name="release_year" placeholder="Év" value={form.release_year} onChange={handleChange} />
+          </div>
+          <div className="col-12">
+            <input className="form-control" name="description" placeholder="Leírás" value={form.description} onChange={handleChange} />
+          </div>
 
-      <hr />
-      <div>
-      <h3>Filmek listája</h3>
-      {/* Searchbar fimekhez */}
-      <SearchBar search={search} setSearch={setSearch} />
+        </div>
+        <button className="btn btn-primary mt-3" onClick={handleSubmit}>
+          {editingId ? "Frissítés" : "Hozzáadás"}
+        </button>
       </div>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Cím</th>
-            <th>Leírás</th>
-            <th>Hossz (perc)</th>
-            <th>Év</th>
-            <th>Műfaj</th>
-            <th>Aktív</th>
-            <th>Művelet</th>
-          </tr>
-        </thead>
-        <tbody>
-          {films
-          .filter(film =>
-          film.title.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(film => (
-          <tr key={film.film_id}>
-            <td>{film.film_id}</td>
-            <td>{film.title}</td>
-            <td>{film.description}</td>
-            <td>{film.duration_minutes}</td>
-            <td>{film.release_year}</td>
-            <td>{film.genre}</td>
-            <td>{Number(film.is_active) === 1 ? "Aktív" : "Inaktív"}</td>
-            <td>
-              <button onClick={() => handleEdit(film)}>Szerkeszt</button>
-              <button onClick={() => handleDelete(film.film_id)}>Deaktivál</button>
-              {film.is_active === 0 && (
-              <button onClick={() => handleReactivate(film.film_id)}>
-                Aktiválás
-              </button>
-              )}
-            </td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
+
+      {/* Film kereső!!!*/}
+      <div className="mb-3">
+        <SearchBar search={search} setSearch={setSearch} />
+      </div>
+      <div className="table-responsive">
+
+        <table className="table table-dark table-striped table-hover align-middle">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cím</th>
+              <th>Műfaj</th>
+              <th>Perc</th>
+              <th>Év</th>
+              <th>Státusz</th>
+              <th>Művelet</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {films
+              .filter(f => f.title.toLowerCase().includes(search.toLowerCase()))
+              .map(film => (
+                <tr key={film.film_id}>
+
+                  <td>{film.film_id}</td>
+                  <td>{film.title}</td>
+                  <td>{film.genre}</td>
+                  <td>{film.duration_minutes}</td>
+                  <td>{film.release_year}</td>
+
+                  <td>
+                    <span className={`badge ${film.is_active ? "bg-success" : "bg-secondary"}`}>
+                      {film.is_active ? "Aktív" : "Inaktív"}
+                    </span>
+                  </td>
+
+                  <td>
+                    <button className="btn btn-sm btn-warning me-2" onClick={() => handleEdit(film)}>Szerkeszt</button>
+
+                    <button className="btn btn-sm btn-danger me-2" onClick={() => handleDelete(film.film_id)}>🗑️</button>
+
+                    {film.is_active === 0 && (
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() => handleReactivate(film.film_id)}
+                      >
+                        ✔
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

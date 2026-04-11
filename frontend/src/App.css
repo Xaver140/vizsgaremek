@@ -1,4 +1,4 @@
-/* alap reset */
+/* RESET */
 *{
   box-sizing:border-box;
   margin:0;
@@ -6,133 +6,73 @@
   font-family:Arial, Helvetica, sans-serif;
 }
 
-body{
-  background:#f4f4f4;
-  color:#222;
-}
-.container{
-  max-width:1000px;
-  margin:0 auto;
-  padding:20px;
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #e5e7eb;
 }
 
-
-nav{
-  width:100%;
-  background:#111;
+.card {
+  background: #1f2937;
+  border: none;
+  border-radius: 14px;
+  color: #e5e7eb;
 }
 
-.nav-container{
-  max-width:1200px;
-  margin:0 auto;
-  padding:15px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.film-title:hover {
+  color: #38bdf8;
 }
 
-.nav-left{
-  display:flex;
-  gap:20px;
+.nav-hover {
+  position: relative;
+  transition: 0.3s;
 }
 
-.nav-right{
-  display:flex;
-  gap:10px;
+.nav-hover::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #38bdf8;
+  left: 0;
+  bottom: 0;
+  transition: 0.3s;
 }
 
-nav a{
-  color:white;
-  text-decoration:none;
+.nav-hover:hover {
+  color: #38bdf8 !important;
 }
 
-nav a:hover{
-  text-decoration:underline;
+.nav-hover:hover::after {
+  width: 100%;
 }
 
-
-button{
-  padding:8px 14px;
-  border:none;
-  background:#ff7a00;
-  color:white;
-  border-radius:5px;
-  cursor:pointer;
+button:hover {
+  transform: scale(1.05);
+  transition: 0.2s;
 }
 
-button:hover{
-  background:#e86d00;
+.seat {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 12px;
+  cursor: pointer;
+  background: #334155;
+  color: white;
+  transition: 0.2s;
+
+}
+.seat.selected {
+  background: #22c55e;
+  color: black;
 }
 
-
-input{
-  padding:8px;
-  margin:5px 0;
-  border:1px solid #ccc;
-  border-radius:4px;
-}
-
-
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
-}
-
-
-.film-card{
-  padding:20px 0;
-  border-bottom:1px solid #ccc;
-}
-
-.film-info h2{
-  margin-bottom:5px;
-}
-
-.vetitesek{
-  margin-top:10px;
-}
-
-.vetitesek button{
-  margin-right:10px;
-  margin-top:5px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-}
-
-th, td{
-  padding:10px;
-  border:1px solid #ccc;
-  text-align:left;
-}
-
-th{
-  background:#eee;
-}
-
-form{
-  margin-top:20px;
-  margin-bottom:20px;
-}
-
-form input{
-  display:block;
-  width:250px;
-}
-
-@media (max-width:700px){
-
-  .film-card{
-    flex-direction:column;
-  }
-
-  nav{
-    flex-direction:column;
-    gap:10px;
-  }
-
+.seat.booked {
+  background: #1e293b;
+  opacity: 0.5;
+  cursor: not-allowed;
 }

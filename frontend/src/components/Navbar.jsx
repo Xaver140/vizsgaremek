@@ -2,62 +2,88 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserRole } from "../utils/auth";
 import { useState } from "react";
 import AuthModal from "./AuthModal";
+import "../App.css";
 
 export default function Navbar() {
 
   const role = getUserRole();
   const navigate = useNavigate();
   const [showAuth, setShowAuth] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
+  const handleNavClick = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav
+        className="navbar navbar-expand-lg navbar-dark shadow-sm"
+        style={{
+          background: "linear-gradient(90deg, #111, #1a1a1a)",
+          padding: "10px 0"
+        }}
+      >
+        <div className="container d-flex justify-content-between align-items-center position-relative">
 
-        <div className="container">
-
+          {/*hambi */}
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
+            onClick={() => setMenuOpen(!menuOpen)}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* közép */}
-          <div
-            className="collapse navbar-collapse justify-content-center"
-            id="navbarNav"
-          >
+          <Link
+            to="/"
+            className="logo-center d-flex align-items-center text-decoration-none text-light">
+            <img
+              src="/images/mozilogo.webp"
+              alt="logo"
+              style={{
+                width: "40px",
+                marginRight: "10px",
+                borderRadius: "50%"
+              }}
+            />
+            <span className="fw-bold">SilverMozi</span>
+          </Link>
+
+          <div className={`navbar-collapse ${menuOpen ? "show" : "collapse"} justify-content-center`}>
 
             <ul className="navbar-nav align-items-center gap-4">
 
-              <li className="nav-item d-flex align-items-center">
-                <img src="/images/mozilogo.webp" alt="logo" style={{ width: "40px", marginRight: "10px" }}/><Link className="nav-link fw-bold" to="/">SilverMozi</Link>
-              </li>
-              
               <li className="nav-item">
-                <Link className="nav-link" to="/">Főoldal</Link>
+                <Link className="nav-link nav-hover" to="/" onClick={handleNavClick}>
+                  Főoldal
+                </Link>
               </li>
 
               <li className="nav-item">
-                <Link className="nav-link" to="/filmek">Filmek</Link>
+                <Link className="nav-link nav-hover" to="/filmek" onClick={handleNavClick}>
+                  Filmek
+                </Link>
               </li>
 
               {role && (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profil">Profil</Link>
+                  <Link className="nav-link nav-hover" to="/profil" onClick={handleNavClick}>
+                    Profil
+                  </Link>
                 </li>
               )}
 
               {role === "admin" && (
                 <li className="nav-item">
-                  <Link className="nav-link text-warning" to="/admin">Admin</Link>
+                  <Link className="nav-link nav-hover text-warning" to="/admin" onClick={handleNavClick}>
+                    Admin
+                  </Link>
                 </li>
               )}
 
@@ -65,8 +91,11 @@ export default function Navbar() {
                 <>
                   <li className="nav-item">
                     <button
-                      className="btn btn-outline-light"
-                      onClick={() => setShowAuth(true)}
+                      className="btn btn-outline-light btn-sm px-3 rounded-pill"
+                      onClick={() => {
+                        setShowAuth(true);
+                        setMenuOpen(false);
+                      }}
                     >
                       Belépés
                     </button>
@@ -74,8 +103,11 @@ export default function Navbar() {
 
                   <li className="nav-item">
                     <button
-                      className="btn btn-warning"
-                      onClick={() => setShowAuth(true)}
+                      className="btn btn-warning btn-sm px-3 rounded-pill"
+                      onClick={() => {
+                        setShowAuth(true);
+                        setMenuOpen(false);
+                      }}
                     >
                       Regisztráció
                     </button>
@@ -85,7 +117,13 @@ export default function Navbar() {
 
               {role && (
                 <li className="nav-item">
-                  <button className="btn btn-danger" onClick={logout}>
+                  <button
+                    className="btn btn-danger btn-sm px-3 rounded-pill"
+                    onClick={() => {
+                      logout();
+                      setMenuOpen(false);
+                    }}
+                  >
                     Kijelentkezés
                   </button>
                 </li>
@@ -93,8 +131,10 @@ export default function Navbar() {
 
             </ul>
           </div>
+
         </div>
       </nav>
+
       <AuthModal show={showAuth} onClose={() => setShowAuth(false)} />
     </>
   );

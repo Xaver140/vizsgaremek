@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
 
+
 export default function Szekfog() {
   const { vetitesId } = useParams();
   const navigate = useNavigate();
@@ -9,50 +10,37 @@ export default function Szekfog() {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  // adatok lekérés
   useEffect(() => {
     api.get(`/vetites/${vetitesId}/ulesek`)
       .then(res => setSeats(res.data));
   }, []);
 
-  // csoportosítás sorok szerint
   const groupedSeats = seats.reduce((acc, seat) => {
     if (!acc[seat.row_number]) acc[seat.row_number] = [];
     acc[seat.row_number].push(seat);
     return acc;
   }, {});
 
-  // foglalt?
   const isBooked = (seat) => seat.foglalt === 1;
 
-  // kiválasztott?
-  const isSelected = (seat) => {
-    return selectedSeats.some(s => s.row_number === seat.row_number && s.seat_number === seat.seat_number);
-  };
+  const isSelected = (seat) =>
+    selectedSeats.some(s => s.ules_id === seat.ules_id);
 
-  // kattintás
   const handleSeatClick = (seat) => {
-  if (isBooked(seat)) return;
+    if (isBooked(seat)) return;
 
-  if (isSelected(seat)) {
-    // kivétel
-    setSelectedSeats(prev =>
-      prev.filter(
-        s =>
-          !(s.row_number === seat.row_number &&
-            s.seat_number === seat.seat_number)
-      )
-    );
-  } else {
-    // foglalás limit!!!!!
-    if (selectedSeats.length >= 5) {
-      alert("Maximum 5 helyet választhatsz!");
-      return;
+    if (isSelected(seat)) {
+      setSelectedSeats(prev =>
+        prev.filter(s => s.ules_id !== seat.ules_id)
+      );
+    } else {
+      if (selectedSeats.length >= 5) {
+        alert("Maximum 5 helyet választhatsz!");
+        return;
+      }
+      setSelectedSeats(prev => [...prev, seat]);
     }
-
-    setSelectedSeats(prev => [...prev, seat]);
-  }
-};
+  };
 
   const handleBooking = async () => {
     if (selectedSeats.length === 0) {
@@ -60,96 +48,91 @@ export default function Szekfog() {
       return;
     }
 
-    try
-    {
+    try {
       const res = await api.post("/foglalas", {
         vetites_id: vetitesId,
         ules_ids: selectedSeats.map(s => s.ules_id),
         final_price: 2200 * selectedSeats.length
       });
 
-
-      alert("Foglalás sikeres!");
       navigate("/fizetes", {
         state: {
-        konyveles_ids: res.data.konyveles_ids,
-        amount: 2200 * selectedSeats.length
+          konyveles_ids: res.data.konyveles_ids,
+          amount: 2200 * selectedSeats.length
         }
       });
 
     } catch (err) {
-      if(err.response?.status === 401){
-        alert("Nem vagy bejelentkezve!");
+      if (err.response?.status === 401) {
+        alert("Bejelentkezés szükséges!");
         navigate("/login");
-        return;
-      }
-      else {alert(err.response?.data?.error || "Hiba történt a foglalás során.");
-        console.error(err);
+      } else {
+        alert("Hiba történt");
       }
     }
   };
 
   return (
-    <div>
+    <div className="container py-4 text-center">
 
-      <div className="container">
-        <h2>Székfoglalás</h2>
+      <h2 className="mb-4 text-white"> Székfoglalás</h2>
 
-        <div style={{
-          textAlign: "center",
-          marginBottom: "20px",
-          background: "#ccc",
-          padding: "10px"
-        }}>
-          Vászon
-        </div>
-
-        <p>Zöld Szabad | Narancs Kiválasztott | fekete/szürke Foglalt</p>
-
-        {/* székek */}
-        {Object.keys(groupedSeats).map(row => (
-          <div key={row} style={{ marginBottom: "10px" }}>
-            <strong>{row}</strong>
-
-            {groupedSeats[row].map(seat => (
-              <button
-                key={seat.ules_id}
-                onClick={() => handleSeatClick(seat)}
-                style={{
-                  margin: "5px",
-                  width: "50px",
-                  height: "50px",
-                  border: "none",
-                  cursor: isBooked(seat) ? "not-allowed" : "pointer",
-
-                  backgroundColor:
-                    isBooked(seat)
-                      ? "gray"
-                      : isSelected(seat)
-                      ? "orange"
-                      : "green",
-
-                  color: "white"
-                }}
-              >
-                {seat.seat_number}
-              </button>
-            ))}
-          </div>
-        ))}
-
-        {/* foglalás */}
-        <button
-          onClick={handleBooking}
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            fontSize: "16px"
-          }}
-        >
-          Foglalás
-        </button>
+      {/*vászon*/}
+      <div style={{
+        background: "#94a3b8",
+        height: "40px",
+        marginBottom: "30px",
+      }}>
+        <span style={{ color: "#000", fontWeight: "bold" }}>VÁSZON</span>
       </div>
+
+      {/* Székek fajtái */}
+      <div className="d-flex justify-content-center gap-4 mb-4 text-light">
+
+        <div><span className="seat free"></span> Szabad</div>
+        <div><span className="seat selected"></span> Kiválasztott</div>
+        <div><span className="seat booked"></span> Foglalt</div>
+
+      </div>
+
+      {Object.keys(groupedSeats).map(row => (
+        <div key={row} className="mb-2">
+
+          <span className="text-secondary me-2">{row}</span>
+
+          {groupedSeats[row].map(seat => (
+            <span
+              key={seat.ules_id}
+              onClick={() => handleSeatClick(seat)}
+              className={`seat 
+                ${isBooked(seat) ? "booked" : ""}
+                ${isSelected(seat) ? "selected" : ""}
+              `}
+            >
+              {seat.seat_number}
+            </span>
+          ))}
+
+        </div>
+      ))}
+
+      <div className="mt-4 text-light">
+        Kiválasztott helyek: {selectedSeats.map(s => `${s.row_number}${s.seat_number}`).join(", ") || "Nincs"}
+      </div>
+
+      <button
+        onClick={handleBooking}
+        className="btn mt-4"
+        style={{
+          background: "#38bdf8",
+          color: "black",
+          padding: "10px 25px",
+          borderRadius: "10px",
+          fontWeight: "bold"
+        }}
+      >
+        Foglalás ({selectedSeats.length})
+      </button>
     </div>
   );
 }

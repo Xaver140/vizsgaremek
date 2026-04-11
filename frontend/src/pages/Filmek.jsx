@@ -9,7 +9,6 @@ export default function Filmek(){
   const [vetitesek,setVetitesek] = useState({});
   const [selectedDate,setSelectedDate] = useState(new Date());
 
-  // következő 7 nap
   const days = [];
   for(let i=0;i<7;i++){
     const d = new Date();
@@ -17,177 +16,147 @@ export default function Filmek(){
     days.push(d);
   }
 
-  // vetítések lekérése
   const fetchVetitesek = async (filmId)=>{
     const res = await api.get(`/vetites/${filmId}`);
-
-    setVetitesek(prev=>({
-      ...prev,
-      [filmId]:res.data
-    }));
+    setVetitesek(prev=>({...prev,[filmId]:res.data}));
   }
 
-  // filmek lekérése
   const fetchFilms = async ()=>{
     const res = await api.get("/filmek");
     setFilms(res.data);
-
-    res.data.forEach(film=>{
-      fetchVetitesek(film.film_id);
-    });
+    res.data.forEach(f=>fetchVetitesek(f.film_id));
   }
 
-  useEffect(()=>{
-    fetchFilms();
-  },[]);
+  useEffect(()=>{ fetchFilms(); },[]);
 
   return(
-    <div>
-      <div className="container">
-        <h1 className="mb-4">Előadások</h1>
+    <div className="container py-4">
 
-        <div className="d-flex gap-3 mb-2">
+      <h2 className="mb-4 fw-bold"> Előadások</h2>
 
-          {days.map((day,i)=>{
+      <div className="d-flex gap-3 mb-3 flex-wrap">
 
-            const active = day.toDateString() === selectedDate.toDateString();
-            const isToday = day.toDateString() === new Date().toDateString();
+        {days.map((day,i)=>{
 
-            return(
-              <span
-                key={i}
-                onClick={()=>setSelectedDate(day)}
-                style={{
-                  cursor:"pointer",
-                  fontWeight: active ? "bold" : "normal",
-                  color: active ? "#ff7a00" : "#000",
-                  borderBottom: active ? "2px solid #ff7a00" : "none",
-                  paddingBottom:"3px"
-                }}
-              >
-                {isToday
-                  ? "Ma"
-                  : day.toLocaleDateString("hu-HU",{weekday:"short"})
-                }
-              </span>
-            )
-          })}
+          const active = day.toDateString() === selectedDate.toDateString();
+          const isToday = day.toDateString() === new Date().toDateString();
 
-        </div>
+          return(
+            <div
+              key={i}
+              onClick={()=>setSelectedDate(day)}
+              className={`px-3 py-2 rounded text-center`}
+              style={{
+                cursor:"pointer",
+                background: active ? "#38bdf8" : "#334155",
+                color: active ? "#000" : "#cbd5f5",
+                minWidth:"70px"
+              }}
+            >
+              <div style={{fontSize:"14px"}}>
+                {isToday ? "Ma" : day.toLocaleDateString("hu-HU",{weekday:"short"})}
+              </div>
+              <div style={{fontWeight:"bold"}}>
+                {day.getDate()}
+              </div>
+            </div>
+          )
+        })}
+      </div>
 
-        <div style={{ marginBottom: "20px", fontWeight: "500" }}>
-          {selectedDate.toLocaleDateString("hu-HU", {
-            weekday: "long"
-          }).toUpperCase()}{" "}
-          {selectedDate.toLocaleDateString("hu-HU")
-            .replace(/\./g,"/")
-            .replace(/\s/g,"")}
-        </div>
+      {/* A teljes dátum */}
+      <div className="mb-4 text-white">
+        {selectedDate.toLocaleDateString("hu-HU",{weekday:"long"}).toUpperCase()}{" "}
+        {selectedDate.toLocaleDateString("hu-HU").replace(/\./g,"/").replace(/\s/g,"")}
+      </div>
 
-        {films
-          .filter(film => {
-            const vet = vetitesek[film.film_id] || [];
+      {/* Filmek sorolása */}
+      {films
+        .filter(film => {
+          const vet = vetitesek[film.film_id] || [];
+          return vet.some(v => new Date(v.start_time).toDateString() === selectedDate.toDateString());
+        })
+        .map(film=>(
 
-            return vet.some(v => {
-              const d = new Date(v.start_time);
-              return d.toDateString() === selectedDate.toDateString();
-            });
-          })
-          .map(film=>(
-
-          <div key={film.film_id} className="card mb-4 shadow p-3">
-
-            <div className="d-flex">
-
+        <div key={film.film_id} className="card mb-4 border-0 shadow-sm">
+          <div className="row g-0">
+            <div className="col-4 col-md-2">
               <img
                 src={`/images/${film.film_img || "default.jpg"}`}
                 alt={film.title}
+                className="img-fluid rounded-start"
                 style={{
-                  width: "150px",
-                  height: "220px",
-                  objectFit: "cover",
-                  marginRight: "20px",
-                  borderRadius: "10px"
+                  height:"100%",
+                  objectFit:"cover"
                 }}
               />
-
-              <div>
-
-                <h4
-                  onClick={() => navigate(`/film/${film.film_id}`)}
-                  style={{ cursor: "pointer" }}
-                  onMouseEnter={(e) => e.target.style.color = "#ff7a00"}
-                  onMouseLeave={(e) => e.target.style.color = "black"}
-                >
-                  {film.title}
-                </h4>
-
-                <p>
-                  {film.genre} | {film.duration_minutes} perc
-                </p>
-
-                <div>
-
-                  {(() => {
-
-                    const filtered = vetitesek[film.film_id]
-                      ?.filter(v=>{
-                        const d = new Date(v.start_time);
-                        return d.toDateString() === selectedDate.toDateString();
-                      }) || [];
-
-                    // terem típus kiszedése (VIP / IMAX / Standard)
-                    const getTeremType = (name) => {
-                      if (name.includes("VIP")) return "VIP";
-                      if (name.includes("IMAX")) return "IMAX";
-                      return "Standard";
-                    };
-
-                    const grouped = filtered.reduce((acc, v) => {
-                      const type = getTeremType(v.terem);
-
-                      if (!acc[type]) acc[type] = [];
-                      acc[type].push(v);
-
-                      return acc;
-                    }, {});
-
-                    return Object.keys(grouped).map(type => (
-                      <div key={type} style={{ marginBottom: "10px" }}>
-
-                        <div style={{ fontWeight: "bold", color: "#ff7a00" }}>
-                          {type}
-                        </div>
-
-                        <div>
-                          {grouped[type].map(v => (
-                            <button
-                              key={v.vetites_id}
-                              className="btn btn-sm btn-primary me-2 mb-2"
-                              onClick={() => navigate(`/foglalas/${v.vetites_id}`)}
-                            >
-                              {new Date(v.start_time).toLocaleTimeString("hu-HU",{
-                                hour:"2-digit",
-                                minute:"2-digit"
-                              })}
-                            </button>
-                          ))}
-                        </div>
-
-                      </div>
-                    ));
-
-                  })()}
-
-                </div>
-
-              </div>
             </div>
 
-          </div>
-        ))}
+            <div className="col-8 col-md-10 p-3">
 
-      </div>
+              <h5
+                onClick={() => navigate(`/film/${film.film_id}`)}
+                style={{ cursor:"pointer" }}
+                className="fw-bold mb-1 film-title"
+              >
+                {film.title}
+              </h5>
+
+              <div className="text-muted mb-3">
+                {film.genre} • {film.duration_minutes} perc
+              </div>
+
+              {(() => {
+
+                const filtered = vetitesek[film.film_id]
+                  ?.filter(v => new Date(v.start_time).toDateString() === selectedDate.toDateString()) || [];
+
+                const getTeremType = (name) => {
+                  if (name.includes("VIP")) return "VIP";
+                  if (name.includes("IMAX")) return "IMAX";
+                  return "Standard";
+                };
+
+                const grouped = filtered.reduce((acc, v) => {
+                  const type = getTeremType(v.terem);
+                  if (!acc[type]) acc[type] = [];
+                  acc[type].push(v);
+                  return acc;
+                }, {});
+
+                return Object.keys(grouped).map(type => (
+                  <div key={type} className="mb-2">
+
+                    <span className="badge bg-warning text-dark me-2">
+                      {type}
+                    </span>
+
+                    {grouped[type].map(v => (
+                      <button
+                        key={v.vetites_id}
+                        className="btn btn-sm me-2 mb-2"
+                        style={{
+                          background: "#334155",
+                          color: "#e5e7eb",
+                          border: "none",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                        }}
+                        onClick={() => navigate(`/foglalas/${v.vetites_id}`)}
+                      >
+                        {new Date(v.start_time).toLocaleTimeString("hu-HU",{
+                          hour:"2-digit",
+                          minute:"2-digit"
+                        })}
+                      </button>
+                    ))}
+                  </div>
+                ));
+              })()}
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
