@@ -11,7 +11,6 @@ export default function Fizetes() {
   const [method, setMethod] = useState("credit_card");
   const [paid, setPaid] = useState(false);
 
-  // 🔥 FIZETÉS
   const handlePayment = async () => {
     try {
       const res = await api.post("/fizetes", {
@@ -32,7 +31,6 @@ export default function Fizetes() {
     }
   };
 
-  // 🔥 CANCEL GOMB
   const handleCancel = async () => {
     if (konyveles_ids?.length > 0) {
       await api.delete("/foglalas/cancel", {
@@ -42,8 +40,6 @@ export default function Fizetes() {
 
     navigate("/");
   };
-
-  // 🔥 OLDAL ELHAGYÁSA (bezárás / refresh)
   useEffect(() => {
     const handleLeave = () => {
       if (!paid && konyveles_ids?.length > 0) {
@@ -76,7 +72,6 @@ export default function Fizetes() {
               <h2 className="fw-bold">{amount} Ft</h2>
             </div>
   
-            {/* Fizetési mód */}
             <div className="mb-4">
               <label className="form-label">Fizetési mód</label>
               <select
